@@ -1,0 +1,91 @@
+body {
+  margin: 50px auto 0;
+  padding:0;
+  font-family: 'Dosis', sans-serif;
+  }
+  
+#showcase {
+  display: inline-block;
+  top: 80px;
+
+}
+  
+#rectangle {
+  border: 3px solid yellow;
+  z-index: 1;
+  position: absolute;
+  
+  }
+  
+#new {
+  width: 40%;
+  margin-left: 30%;
+  margin-top: 10%;
+  border: 10px solid black;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 10px 10px 5px #888888;
+  
+
+
+  }
+
+  #piechart {
+  text-align: center;
+  display: inline-block;
+  top: 80px;
+  position: relative;
+  margin-left: 10px;
+
+  }
+  
+.nav {
+  height: 40px;
+  position: fixed;
+  width: 100%;
+  background-color: #333636;
+  color: white;
+  z-index: 2;
+  top:0;
+  a {
+
+    font-size: 170%;
+    font-weight: bolder;
+    margin: 10px 5px;
+    text-decoration: none;
+    color: white;
+    }
+    
+  }
+  
+#footer {
+height: 50px;
+  position: fixed ;
+  bottom: 0;
+  width: 100%;
+  background-color: #333636;
+  color: white;
+  text-decoration: none;
+  a {
+    text-decoration: none;
+    color: white;
+    }
+  }
+  
+#container {
+
+
+  text-align: center;
+
+  }   
+#image {
+  border: 5px solid white;
+  border-width: 5px 5px 50px 5px;
+  box-shadow: 10px 10px 5px #888888;
+  }
+  
+body {
+    background-color: #c0c0c0;
+    }
+
+    

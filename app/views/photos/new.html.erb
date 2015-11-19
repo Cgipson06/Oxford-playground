@@ -1,0 +1,33 @@
+
+<div id="new">
+<%= form_for @photo, multipart: true do |f| %>
+  <h1>Upload a photo to get started</h1>
+  <%= f.text_field :url, :placeholder => "Paste a url here", :style => "font-size: 150%;background-color:inherit;text-align: center;" %><br>
+  or<br>
+  <%= f.file_field :picture %>
+  <br></br>
+  <%= image_submit_tag( "cloudupload.png", height: '100')  %>
+<% end %>
+</div>
+
+<script>
+
+$('#photo_url').click( function () {
+$(':input#photo_picture')
+  .not(':button, :submit, :reset, :hidden')
+  .val('')
+  .removeAttr('checked')
+  .removeAttr('selected');
+  });
+$('#photo_picture').click( function () {
+$(':input#photo_url')
+  .not(':button, :submit, :reset, :hidden')
+  .val('')
+  .removeAttr('checked')
+  .removeAttr('selected');
+  });
+</script>
+  
+  
+  
+  

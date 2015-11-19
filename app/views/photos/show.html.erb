@@ -1,0 +1,103 @@
+<div id = 'container'>
+<div id = 'showcase' style="position:relative"> 
+  <%= image_tag(@photo.source.url, id: "image") %>
+</div>
+  <div id="piechart"></div>
+</div>
+
+<script>
+    function myFunction() {
+            var num = <%= @rectangles %>;
+            for (i=0; i< num; i++) {
+                var leftvar = gon.description[i]['faceRectangle']['left'];
+                var topvar = gon.description[i]['faceRectangle']['top'];
+                var width = gon.description[i]['faceRectangle']['width'];
+                var height = gon.description[i]['faceRectangle']['height'];
+                $('#showcase').prepend('<div id=' + i+  '></div>');
+                $('#' + i).prop('title', JSON.stringify(gon.jsonDescription[i]['scores'], null, 2));
+             
+                 
+                $('#' + i).css('border',"3px solid yellow");
+                $('#' + i).css('position', 'absolute');
+                $('#' + i).css( 'top', topvar );
+                $('#' + i).css('left', leftvar);
+                $('#' + i).css('width', width);
+                $('#' + i).css('height', height);
+                $('#' + i).addClass('tooltip');
+                }
+            
+    }
+    window.onload = myFunction;
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function() {
+// Tooltip only Text
+$('.masterTooltip').hover(function(){
+        // Hover over code
+        var title = $(this).attr('title');
+        $(this).data('tipText', title).removeAttr('title');
+        $('#tooltip')
+        .html("<p>lookatmeinstertingp</p>")
+        .appendTo(this)
+        .fadeIn('slow');
+}, function() {
+        // Hover out code
+        $(this).attr('title', $(this).data('tipText'));
+        $('.tooltip').remove();
+}).mousemove(function(e) {
+        var mousex = e.pageX + 20; //Get X coordinates
+        var mousey = e.pageY + 10; //Get Y coordinates
+        $('.tooltip')
+        .css({ top: mousey, left: mousex })
+});
+});
+</script>
+
+
+<script>
+  
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+        function drawChart() {
+          var arrOne = new Array;
+          var arrTwo = new Array;
+          for (var a = 0; a<gon.description.length;a++) {
+            obj = Object.keys(gon.jsonDescription[a]['scores']).map(function(k) { return k; });
+            obj1 = Object.keys(gon.jsonDescription[a]['scores']).map( function(k) { return gon.jsonDescription[a]['scores'][k];});
+           
+            //here we are looping on a(emotional values) and are adding the each set as a nested array to arrOne
+            arrOne[a] = obj1;
+            arrTwo = obj;
+          }
+          console.log(arrOne)
+          var data = new google.visualization.DataTable();
+          data.addColumn('string', 'Emotion');
+          data.addColumn('number', 'Estimated Percentage');
+          for (var i=0; i<arrOne.length;i++) {
+            for (var j=0; j<arrTwo.length; j++) {
+              data.addRow([arrTwo[j], arrOne[i][j]]);
+          }
+          }
+          
+          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+          var heightvar = $('#piechart').width()
+          var options = {
+            title: 'Emotions',
+            is3D: true,
+            backgroundColor: '#c0c0c0'
+            
+        };
+        options.height = $('#showcase').height()
+        options.width = $('#showcase').width()
+
+          chart.draw(data, options);
+        }   
+        
+</script>
+
+
+
+
+
