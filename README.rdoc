@@ -1,13 +1,24 @@
-== README
+== Oxford API rails demo app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A simple site the takes a photo via upload or url, crops and saves it, sends it out to the Microsoft Project Oxford Emotion API for facial recognition and emotional content.  That information is used to fill in the chart of emotions via Google Chart API.
 
-Things you may want to cover:
+See it deployed at <a href="https://protected-caverns-3592.herokuapp.com/">Heroku</a>
 
-* Ruby version
+To run yourself:
 
-* System dependencies
+* Clone this repo
+
+* Relies on the following ENV variables: 
+..1. For Amazon S3 asset storage
+..*    S3_BUCKET_NAME
+..*    AWS_ACCESS_KEY
+..*    AWS_SECRET_ACCESS_KEY
+..2. For the Microsoft Project Oxford API
+..*    OXFORD-API-KEY
+
+
+* 
+
 
 * Configuration
 
