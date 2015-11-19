@@ -2,13 +2,13 @@ default: &default
   adapter: postgresql
   encoding: unicode
   database: oxford
-  username: postgres
-  password: codyanna
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
 development:
   <<: *default
+  username: postgres
+  password: codyanna
   database: oxford_development
 
 test:
@@ -19,6 +19,9 @@ production:
   <<: *default
   adapter: postgresql
   database: oxford_database_production
+  username: oxford-cwg
+  password: <%= ENV['ODIN-FACEBOOK_DATABASE_PASSWORD'] %>
+
   pool: 5
   timeout: 5000
 
