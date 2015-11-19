@@ -2,38 +2,14 @@
 
 A simple site the takes a photo via upload or url, crops and saves it, sends it out to the Microsoft Project Oxford Emotion API for facial recognition and emotional content.  That information is used to fill in the chart of emotions via Google Chart API.
 
-See it deployed at <a href="https://protected-caverns-3592.herokuapp.com/">Heroku</a>
+See it deployed at https://protected-caverns-3592.herokuapp.com/
 
 To run yourself:
 
 * Clone this repo
 
 * Relies on the following ENV variables: 
-..1. For Amazon S3 asset storage
-..*    S3_BUCKET_NAME
-..*    AWS_ACCESS_KEY
-..*    AWS_SECRET_ACCESS_KEY
-..2. For the Microsoft Project Oxford API
-..*    OXFORD-API-KEY
+1. For Amazon S3 asset storage: S3_BUCKET_NAME, AWS_ACCESS_KEY ,AWS_SECRET_ACCESS_KEY
+2. For the Microsoft Project Oxford API:  OXFORD-API-KEY
 
 
-* 
-
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
