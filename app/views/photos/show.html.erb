@@ -17,13 +17,13 @@
                 $('#' + i).prop('title', JSON.stringify(gon.jsonDescription[i]['scores'], null, 2));
              
                  
-                $('#' + i).css('border',"3px solid yellow");
+                
                 $('#' + i).css('position', 'absolute');
                 $('#' + i).css( 'top', topvar );
                 $('#' + i).css('left', leftvar);
                 $('#' + i).css('width', width);
                 $('#' + i).css('height', height);
-                $('#' + i).addClass('tooltip');
+                $('#' + i).addClass('tooltip faceborder');
                 }
             
     }
@@ -78,9 +78,8 @@ $('.masterTooltip').hover(function(){
           for (var i=0; i<arrOne.length;i++) {
             for (var j=0; j<arrTwo.length; j++) {
               data.addRow([arrTwo[j], arrOne[i][j]]);
+            }
           }
-          }
-          
           var chart = new google.visualization.PieChart(document.getElementById('piechart'));
           var heightvar = $('#piechart').width()
           var options = {
@@ -92,7 +91,7 @@ $('.masterTooltip').hover(function(){
         options.height = $('#showcase').height()
         options.width = $('#showcase').width()
 
-          chart.draw(data, options);
+        chart.draw(data, options);
         }   
         
 </script>
