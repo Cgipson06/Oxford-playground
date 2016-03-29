@@ -1,102 +1,124 @@
-<div id = 'container'>
-<div id = 'showcase' style="position:relative"> 
-  <%= image_tag(@photo.source.url, id: "image") %>
-</div>
-  <div id="piechart"></div>
-</div>
 
+<div id = 'container' class='clearfix'>
+    <div id="left">
+        <div id = 'showcase' style="position:relative"> 
+            <%= image_tag(@photo.source.url, id: "image") %>
+        </div>
+    </div>
+    <div id="charts">
+            <h2>Results: <%= @rectangles %>  <%= 'Face'.pluralize(@rectangles)%> detected</h2>
+            <% if @rectangles > 1 %>
+                <h4> Click each face to reveal analysis details </h4>
+            <% else %>    
+                <h4> Photo Analysis results: </h4>
+            <% end %>
+            
+    </div>
+    
+</div>
 <script>
-    function myFunction() {
-            var num = <%= @rectangles %>;
+
+    function drawFaceBorder() {
+            var num = gon.description.length
             for (i=0; i< num; i++) {
                 var leftvar = gon.description[i]['faceRectangle']['left'];
                 var topvar = gon.description[i]['faceRectangle']['top'];
                 var width = gon.description[i]['faceRectangle']['width'];
                 var height = gon.description[i]['faceRectangle']['height'];
+                if (!gon.details) {
+                    var title = "Face " + i;
+                    }
+                else {
+                  var title = "Face " + i + "\n" + gon.details.faces[i].age + " " + gon.details.faces[i].gender;
+                  }
+                  
                 $('#showcase').prepend('<div id=' + i+  '></div>');
-                $('#' + i).prop('title', JSON.stringify(gon.jsonDescription[i]['scores'], null, 2));
-             
-                 
                 
+                $('#' + i).prop('title', title);
                 $('#' + i).css('position', 'absolute');
                 $('#' + i).css( 'top', topvar );
                 $('#' + i).css('left', leftvar);
                 $('#' + i).css('width', width);
                 $('#' + i).css('height', height);
-                $('#' + i).addClass('tooltip faceborder');
+                $('#' + i).addClass('faceborder');
                 }
             
     }
-    window.onload = myFunction;
-</script>
-
-
-<script type="text/javascript">
-$(document).ready(function() {
-// Tooltip only Text
-$('.masterTooltip').hover(function(){
-        // Hover over code
-        var title = $(this).attr('title');
-        $(this).data('tipText', title).removeAttr('title');
-        $('#tooltip')
-        .html("<p>lookatmeinstertingp</p>")
-        .appendTo(this)
-        .fadeIn('slow');
-}, function() {
-        // Hover out code
-        $(this).attr('title', $(this).data('tipText'));
-        $('.tooltip').remove();
-}).mousemove(function(e) {
-        var mousex = e.pageX + 20; //Get X coordinates
-        var mousey = e.pageY + 10; //Get Y coordinates
-        $('.tooltip')
-        .css({ top: mousey, left: mousex })
-});
-});
-</script>
-
-
-<script>
-  
-      google.load("visualization", "1", {packages:["corechart"]});
-      google.setOnLoadCallback(drawChart);
-        function drawChart() {
+    
+    function drawChart() {
           var arrOne = new Array;
           var arrTwo = new Array;
+          
           for (var a = 0; a<gon.description.length;a++) {
-            obj = Object.keys(gon.jsonDescription[a]['scores']).map(function(k) { return k; });
-            obj1 = Object.keys(gon.jsonDescription[a]['scores']).map( function(k) { return gon.jsonDescription[a]['scores'][k];});
-           
-            //here we are looping on a(emotional values) and are adding the each set as a nested array to arrOne
+            obj = Object.keys(gon.description[a]['scores']).map(function(k) { return k; });
+            obj1 = Object.keys(gon.description[a]['scores']).map( function(k) { return gon.description[a]['scores'][k];});
             arrOne[a] = obj1;
             arrTwo = obj;
           }
-          console.log(arrOne)
-          var data = new google.visualization.DataTable();
-          data.addColumn('string', 'Emotion');
-          data.addColumn('number', 'Estimated Percentage');
+          gon.arr = arrOne
+          gon.arrTwo = arrTwo
+          
+          // loop for every face detected and draw the charts, (i) is face number 
           for (var i=0; i<arrOne.length;i++) {
-            for (var j=0; j<arrTwo.length; j++) {
-              data.addRow([arrTwo[j], arrOne[i][j]]);
-            }
-          }
-          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-          var heightvar = $('#piechart').width()
-          var options = {
-            title: 'Emotions',
-            is3D: true,
-            backgroundColor: '#c0c0c0'
+                
+                //add a div for every chart
+                $('<div id="face' + i + '" />').appendTo('#charts').append('<div id="chart' + i + '" />');
+                if (!gon.details) {
+                  $('#face' + i.toString()).addClass("single-chart hidden");
+                }
+                else {
+                    $('#face' + i.toString()).addClass("single-chart hidden").prepend('<h3>Face # ' + i + ' looks like a ' + gon.details.faces[i].age + " year old " + gon.details.faces[i].gender + " </h3>");
+                }
+                
+                
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Emotion');
+                data.addColumn('number', 'Estimated Percentage');
+                
+                for (var j=0; j<arrTwo.length; j++) {
+                  data.addRow([arrTwo[j], arrOne[i][j]]);
+                }
+      
+                var eyedee = 'chart' + i.toString();
+               
+                
+                var chart = new google.visualization.PieChart(document.getElementById(eyedee));
+                var options = {
+                    title: "Emotions present in face",
+                    is3D: true,
+                    backgroundColor: '#c0c0c0',
+                    sliceVisibilityThreshold: .03,
+                    tooltip:{showColorCode:true},
+                    height: 300,
+                    width: 300
             
-        };
-        options.height = $('#showcase').height()
-        options.width = $('#showcase').width()
+                };
+              
 
-        chart.draw(data, options);
-        }   
+                chart.draw(data, options);
+                
+        }
+        // show the first face chart 
+        $('#charts > div:first').removeClass('hidden');
+        }
+
+    
+    // get face rectangles and draw them on the photo
+    window.onload = drawFaceBorder
+
+    // load and call google charts to chart out the emotions
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    
+    // show charts of emotion with click on face
+    $(document).on("click", ".faceborder", function () {
+        $('#charts > div').addClass('hidden');
+        $('#face' + this.id).removeClass('hidden');
         
+
+   });
+
+              
 </script>
-
-
-
 
 
